@@ -70,8 +70,8 @@ public class BST <T extends Comparable>{
         if(node == null) return;
 
         System.out.print(node.key + " ");
-        this.inorder(node.left);
-        this.inorder(node.right);
+        this.preorder(node.left);
+        this.preorder(node.right);
     }
 
     /**
@@ -81,8 +81,8 @@ public class BST <T extends Comparable>{
     public void postorder(Node node) {
         if(node == null) return;
 
-        this.inorder(node.left);
-        this.inorder(node.right);
+        this.postorder(node.left);
+        this.postorder(node.right);
         System.out.print(node.key + " ");
     }
 
@@ -174,17 +174,17 @@ public class BST <T extends Comparable>{
         System.out.println("\n>>>>>>>>>>>\nInorder:");
         st1.inorder(st1.root);                                                  // 2 5 8 10 15
         System.out.println("\n>>>>>>>>>>>\nPreorder:");
-        st1.preorder(st1.root);                                                 // 5 2 8 10 15
+        st1.preorder(st1.root);                                                 // 5 2 10 8 15
         System.out.println("\n>>>>>>>>>>>\nPostorder:");
-        st1.postorder(st1.root);                                                // 2 8 10 15 5
+        st1.postorder(st1.root);                                                // 2 8 15 10 5
         System.out.println("\n>>>>>>>>>>>");
         System.out.println("Height: " + st1.height(st1.root));                  // Height: 3
         System.out.println("\n>>>>>>>>>>>");
-        System.out.println(st1.search(new Integer(2),st1.root));                // Key: 2
-        System.out.println(st1.search(new Integer(4),st1.root));                // null
+        System.out.println(st1.search(Integer.valueOf(2),st1.root));                // Key: 2
+        System.out.println(st1.search(Integer.valueOf(4),st1.root));                // null
         System.out.println("\n>>>>>>>>>>>");
-        System.out.println(st1.successor(st1.root,null,new Integer(8)));        // Key: 10
-        System.out.println(st1.successor(st1.root,null,new Integer(15)));       // null
+        System.out.println(st1.successor(st1.root,null,Integer.valueOf(8)));        // Key: 10
+        System.out.println(st1.successor(st1.root,null,Integer.valueOf(15)));       // null
         System.out.println("\n>>>>>>>>>>>");
 
         // BST<String> st2=new BST<String>();
