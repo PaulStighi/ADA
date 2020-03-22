@@ -83,6 +83,18 @@ public class BST {
         }
     }
 
+    public int weightPrecalc(Node node) {
+        if(node == null)    return 0;
+        else {
+            int weightR = weightPrecalc(node.right);
+            int weightL = weightPrecalc(node.left);
+
+            node.weight = weightL + weightR + 1;
+
+            return node.weight;
+        }
+    }
+
     /**
      * Searching for a node with the given key
      * in the BST, return null if not found
@@ -143,7 +155,22 @@ public class BST {
         }
         
 		return node;
-	}
+    }
+    
+    public boolean isPerfectlyBalanced(Node node) {
+        if(node.right == null && node.left == null) return true;
+        else {
+            boolean balL = (node.left != null) ? isPerfectlyBalanced(node.left) : true;
+            boolean balR = (node.right != null) ? isPerfectlyBalanced(node.right) : true;
+            
+            int balance = 0;
+            balance += (node.left != null) ? node.left.weight : 0;
+            balance -= (node.right != null) ? node.right.weight : 0;
+            boolean ok = (balance >= -1 && balance <= 1) ? true : false;
+
+            return (balL && balR && ok);
+        }
+    }
 
     public static void main(String[] args) {
         BST st1 = new BST();
@@ -153,20 +180,31 @@ public class BST {
         st1.insert(8);
         st1.insert(15);
 
-        System.out.println("\n>>>>>>>>>>>\nInorder:");
-        st1.inorder(st1.root);                                                  // 2 5 8 10 15
-        System.out.println("\n>>>>>>>>>>>\nPreorder:");
-        st1.preorder(st1.root);                                                 // 5 2 10 8 15
-        System.out.println("\n>>>>>>>>>>>\nPostorder:");
-        st1.postorder(st1.root);                                                // 2 8 15 10 5
-        System.out.println("\n>>>>>>>>>>>");
-        System.out.println("Height: " + st1.height(st1.root));                  // Height: 3
-        System.out.println("\n>>>>>>>>>>>");
-        System.out.println(st1.search(Integer.valueOf(2),st1.root));                // Key: 2
-        System.out.println(st1.search(Integer.valueOf(4),st1.root));                // null
-        System.out.println("\n>>>>>>>>>>>");
-        System.out.println(st1.successor(st1.root,null,Integer.valueOf(8)));        // Key: 10
-        System.out.println(st1.successor(st1.root,null,Integer.valueOf(15)));       // null
-        System.out.println("\n>>>>>>>>>>>");
+        /**
+         *   5
+         *  / \
+         * 2   10
+         *    /  \
+         *   8    15
+         */
+
+        // System.out.println("\n>>>>>>>>>>>\nInorder:");
+        // st1.inorder(st1.root);                                                  // 2 5 8 10 15
+        // System.out.println("\n>>>>>>>>>>>\nPreorder:");
+        // st1.preorder(st1.root);                                                 // 5 2 10 8 15
+        // System.out.println("\n>>>>>>>>>>>\nPostorder:");
+        // st1.postorder(st1.root);                                                // 2 8 15 10 5
+        // System.out.println("\n>>>>>>>>>>>");
+        // System.out.println("Height: " + st1.height(st1.root));                  // Height: 3
+        // System.out.println("\n>>>>>>>>>>>");
+        // System.out.println(st1.search(Integer.valueOf(2),st1.root));                // Key: 2
+        // System.out.println(st1.search(Integer.valueOf(4),st1.root));                // null
+        // System.out.println("\n>>>>>>>>>>>");
+        // System.out.println(st1.successor(st1.root,null,Integer.valueOf(8)));        // Key: 10
+        // System.out.println(st1.successor(st1.root,null,Integer.valueOf(15)));       // null
+        // System.out.println("\n>>>>>>>>>>>");
+
+        st1.weightPrecalc(st1.root);
+        System.out.println(st1.isPerfectlyBalanced(st1.root));
     }
 }
