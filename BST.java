@@ -172,6 +172,35 @@ public class BST {
         }
     }
 
+    public Node searchClosest(int k, Node node, int min_dif) {
+        if(node == null)    return null;
+        if(k == node.key)   return node;
+
+        Node closest = null;
+
+        if(Math.abs(node.key - k) < min_dif) {
+            min_dif = Math.abs(node.key - k);
+            closest = node;
+        }
+
+        if(k < node.key) {
+            Node nL = searchClosest(k, node.left, min_dif);
+            if((nL != null) && Math.abs(nL.key - k) < min_dif) {
+                min_dif = Math.abs(nL.key - k);
+                closest = nL;
+            }
+        }
+        else {
+            Node nR = searchClosest(k, node.right, min_dif);
+            if((nR != null) && Math.abs(nR.key - k) < min_dif) {
+                min_dif = Math.abs(nR.key - k);
+                closest = nR;
+            }
+        }
+
+        return closest;
+    }
+
     public static void main(String[] args) {
         BST st1 = new BST();
         st1.insert(5);
@@ -206,5 +235,6 @@ public class BST {
 
         st1.weightPrecalc(st1.root);
         System.out.println(st1.isPerfectlyBalanced(st1.root));
+        System.out.println(st1.searchClosest(9, st1.root, Integer.MAX_VALUE));
     }
 }
