@@ -1,14 +1,3 @@
-public class Node { // Tree node model
-    public int key;
-    public int height;
-    public Node left, right;
-
-    public Node(int key) {
-        this.key = key;
-        this.height = 1;
-    }
-}
-
 public class AVL {
     private Node root;   // root of AVL
 

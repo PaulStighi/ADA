@@ -1,23 +1,5 @@
-class Node<T extends Comparable> {
-    public T key;
-
-    public Node left, right, p;
-
-    public Node(T key) {
-        this.key = key;
-    }
-
-    /**
-     * Used for printing nodes
-     */
-    public String toString() {
-        return ("Key: " + key);
-    }
-}
-
-
-public class BST <T extends Comparable>{
-    private Node<T> root;   // root of BST
+public class BST {
+    private Node root;   // root of BST
 
     public BST() {
         root=null;
@@ -27,14 +9,14 @@ public class BST <T extends Comparable>{
      * Inserting nodes depending on their key
      * and the current structure of the BST
      */
-    public void insert(T k) {
+    public void insert(int k) {
         Node x, y;
         Node z= new Node(k);
         y=null;
         x=root;
         while (x!=null) {
             y=x;
-            if (x.key.compareTo(z.key)<0)
+            if (x.key < z.key)
                 x=x.right;
             else
                 x=x.left;
@@ -43,7 +25,7 @@ public class BST <T extends Comparable>{
         if (y==null)
             root=z;
         else
-            if (y.key.compareTo(z.key)<0)
+            if (y.key < z.key)
                 y.right=z;
             else
                 y.left=z;
@@ -105,17 +87,17 @@ public class BST <T extends Comparable>{
      * Searching for a node with the given key
      * in the BST, return null if not found
      */
-    public Node search(T key, Node node) {
+    public Node search(int key, Node node) {
         // base case, empty BST
         if(node == null)
             return null;
 
         // if the keys match, the node is found
-        if(node.key.compareTo(key) == 0)
+        if(node.key == key)
             return node;
 
         // if node key is greater than given key we need to search in the left subtree of node, otherwise in the right one
-        if(node.key.compareTo(key) > 0)
+        if(node.key > key)
             return search(key, node.left);
         else
             return search(key, node.right);
@@ -145,18 +127,18 @@ public class BST <T extends Comparable>{
         }
         
         // if the node with the given key was found and has a right child, then the succesor is that child's subtree minimum value
-		if (root.key.compareTo(key) == 0 && root.right != null) {
+		if (root.key == key && root.right != null) {
 				return this.minVal(root.right);
 		}
         
         // same algorithm as the serching one, but also saving the node with greatest key value smaller then the given one
-        if (root.key.compareTo(key) > 0)
+        if (root.key > key)
 		{
 			node = root;
 			return successor(root.left, node, key);
         }
         
-        if (root.key.compareTo(key) < 0) {
+        if (root.key < key) {
 			return successor(root.right, node, key);
         }
         
@@ -164,7 +146,7 @@ public class BST <T extends Comparable>{
 	}
 
     public static void main(String[] args) {
-        BST<Integer> st1=new BST<Integer>();
+        BST st1 = new BST();
         st1.insert(5);
         st1.insert(2);
         st1.insert(10);
@@ -186,13 +168,5 @@ public class BST <T extends Comparable>{
         System.out.println(st1.successor(st1.root,null,Integer.valueOf(8)));        // Key: 10
         System.out.println(st1.successor(st1.root,null,Integer.valueOf(15)));       // null
         System.out.println("\n>>>>>>>>>>>");
-
-        // BST<String> st2=new BST<String>();
-        // st2.insert("dog");
-        // st2.insert("bear");
-        // st2.insert("cat");
-        // st2.insert("fish");
-        // st2.insert("wolf");
-        // st2.inorder(st2.root);
     }
 }
