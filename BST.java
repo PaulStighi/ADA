@@ -326,11 +326,31 @@ public class BST {
         return node;
     }
 
+    public boolean isPostorderArray(int arr[], int start, int end) {
+        if(start >= end)    return true;
+
+        int i, tmp;
+
+        for(i = end - 1 ; i >= start && arr[end] < arr[i] ; --i);
+
+        tmp = i;
+
+        for(; i >= start ; --i) {
+            if(arr[end] < arr[i])
+                return false;
+        }
+
+        if(tmp == start)    return isPostorderArray(arr, start, end - 1);
+        else                return (isPostorderArray(arr, start, tmp) && isPostorderArray(arr, tmp + 1, end - 1));
+    }
+
     public static void main(String[] args) {
         BST st1 = new BST();
         HashSet<Integer> s = new HashSet<Integer>(); 
         Vector<Integer> path = new Vector<Integer>();
         int arr[] = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}; 
+        int arrTrue[] = new int[]{1, 5, 2, 15, 8};
+        int arrFalse[] = new int[]{1, 15, 2, 5, 8};
         st1.insert(5);
         st1.insert(2);
         st1.insert(10);
@@ -371,7 +391,9 @@ public class BST {
         // st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
         // st1.printPathsWithSum(30, st1.root, path, Integer.valueOf(0));
         // st1.printLevels(st1.root);
-        Node root2 = st1.createBalancedBSTfromSortedArray(arr, 0, arr.length - 1);
-        st1.preorder(root2);                                                           // 5 2 1 3 4 7 6 8 9
+        // Node root2 = st1.createBalancedBSTfromSortedArray(arr, 0, arr.length - 1);
+        // st1.preorder(root2);                                                         // 5 2 1 3 4 7 6 8 9
+        System.out.println(st1.isPostorderArray(arrTrue, 0, arrTrue.length - 1));
+        System.out.println(st1.isPostorderArray(arrFalse, 0 , arrFalse.length - 1));
     }
 }
