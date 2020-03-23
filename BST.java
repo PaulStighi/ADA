@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class BST {
     private Node root;   // root of BST
 
@@ -201,8 +203,28 @@ public class BST {
         return closest;
     }
 
+    public boolean checkExistTwoNodesWithSum(int sum, Node node, HashSet<Integer> s) {
+        if(node == null)    return false;
+        
+        int dif = sum - node.key;
+        boolean ok = false;
+        
+        if(s.contains(dif)) {
+            System.out.println("Pair with given sum " + sum + " is (" + node.key + ", " + dif + ")");
+            ok = true;
+        }
+
+        s.add(node.key);
+
+        ok |= checkExistTwoNodesWithSum(sum, node.left, s);
+        ok |= checkExistTwoNodesWithSum(sum, node.right, s);
+
+        return ok;
+    }
+
     public static void main(String[] args) {
         BST st1 = new BST();
+        HashSet<Integer> s = new HashSet<Integer>(); 
         st1.insert(5);
         st1.insert(2);
         st1.insert(10);
@@ -235,6 +257,7 @@ public class BST {
 
         st1.weightPrecalc(st1.root);
         System.out.println(st1.isPerfectlyBalanced(st1.root));
-        System.out.println(st1.searchClosest(9, st1.root, Integer.MAX_VALUE));
+        System.out.println(st1.searchClosest(16, st1.root, Integer.MAX_VALUE));
+        System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
     }
 }
