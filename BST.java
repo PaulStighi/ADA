@@ -4,7 +4,7 @@ public class BST {
     private Node root;   // root of BST
 
     public BST() {
-        root=null;
+        root = null;
     }
     
     /**
@@ -94,6 +94,21 @@ public class BST {
             node.weight = weightL + weightR + 1;
 
             return node.weight;
+        }
+    }
+    
+    public void depthPrecalc(Node node) {
+        if(node == null)    return;
+        else {
+            if(node.p != null) {
+                node.depth = node.p.depth + 1;
+            }
+            if(node.left != null) {
+                depthPrecalc(node.left);
+            }
+            if(node.right != null) {
+                depthPrecalc(node.right);
+            }
         }
     }
 
@@ -222,6 +237,43 @@ public class BST {
         return ok;
     }
 
+    public void printPathFromTo(int k1, int k2, Node root) {
+        Node n1 = search(k1, root);
+        Node n2 = search(k2, root);
+
+        if(n1 == null || n2 == null)    return;
+
+
+        System.out.println("The path from " + n1 + " to " + n2 + " is: ");
+        System.out.println(n1);
+
+        while(n1.depth != n2.depth) {
+            if(n1.depth > n2.depth) {
+                n1 = n1.p;
+                System.out.println(n1);
+            }
+            else {
+                n2 = n2.p;
+            }
+        }
+
+        while(n1 != n2) {
+            n1 = n1.p;
+            n2 = n2.p;
+            System.out.println(n1);
+        }
+
+        while(n1.key != k2) {
+            if(n1.key < k2) {
+                n1 = n1.right;
+            }
+            else {
+                n1 = n1.left;
+            }
+            System.out.println(n1);
+        }
+    }
+
     public static void main(String[] args) {
         BST st1 = new BST();
         HashSet<Integer> s = new HashSet<Integer>(); 
@@ -239,6 +291,10 @@ public class BST {
          *   8    15
          */
 
+        st1.root.depth = 0;
+        st1.depthPrecalc(st1.root);
+        st1.weightPrecalc(st1.root);
+
         // System.out.println("\n>>>>>>>>>>>\nInorder:");
         // st1.inorder(st1.root);                                                  // 2 5 8 10 15
         // System.out.println("\n>>>>>>>>>>>\nPreorder:");
@@ -255,9 +311,9 @@ public class BST {
         // System.out.println(st1.successor(st1.root,null,Integer.valueOf(15)));       // null
         // System.out.println("\n>>>>>>>>>>>");
 
-        st1.weightPrecalc(st1.root);
-        System.out.println(st1.isPerfectlyBalanced(st1.root));
-        System.out.println(st1.searchClosest(16, st1.root, Integer.MAX_VALUE));
-        System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
+        // System.out.println(st1.isPerfectlyBalanced(st1.root));
+        // System.out.println(st1.searchClosest(16, st1.root, Integer.MAX_VALUE));
+        // System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
+        st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
     }
 }

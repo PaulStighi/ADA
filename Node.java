@@ -1,6 +1,6 @@
 public class Node { // Tree node model
     public int key;
-    public int height, weight;
+    public int height, depth, weight;
     public Node left, right, p;
 
     public Node(int key) {
