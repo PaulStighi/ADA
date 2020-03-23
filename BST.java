@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class BST {
@@ -313,10 +314,23 @@ public class BST {
         }
     }
 
+    public Node createBalancedBSTfromSortedArray(int arr[], int start, int end) {
+        if(start > end) return null;
+
+        int mid = (start + end) / 2;
+        Node node = new Node(arr[mid]);
+
+        node.left = createBalancedBSTfromSortedArray(arr, start, mid - 1);
+        node.right = createBalancedBSTfromSortedArray(arr, mid + 1, end);
+
+        return node;
+    }
+
     public static void main(String[] args) {
         BST st1 = new BST();
         HashSet<Integer> s = new HashSet<Integer>(); 
-        Vector<Integer> path = new Vector<Integer>(); 
+        Vector<Integer> path = new Vector<Integer>();
+        int arr[] = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}; 
         st1.insert(5);
         st1.insert(2);
         st1.insert(10);
@@ -356,6 +370,8 @@ public class BST {
         // System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
         // st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
         // st1.printPathsWithSum(30, st1.root, path, Integer.valueOf(0));
-        st1.printLevels(st1.root);
+        // st1.printLevels(st1.root);
+        Node root2 = st1.createBalancedBSTfromSortedArray(arr, 0, arr.length - 1);
+        st1.preorder(root2);                                                           // 5 2 1 3 4 7 6 8 9
     }
 }
