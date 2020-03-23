@@ -274,9 +274,28 @@ public class BST {
         }
     }
 
+    public void printPathsWithSum(int sum, Node node, Vector<Integer> path, int crt) {
+        if(node == null)    return;
+        
+        path.add(node.key);
+
+        if((crt + node.key) == sum) {
+            for(int j = 0 ; j < path.size() ; ++j) {
+                System.out.print(path.get(j) + " ");
+            }
+            System.out.println();
+        }
+
+        printPathsWithSum(sum, node.left, path, crt + node.key);
+        printPathsWithSum(sum, node.right, path, crt + node.key);
+
+        path.remove(path.size() - 1);
+    }
+
     public static void main(String[] args) {
         BST st1 = new BST();
         HashSet<Integer> s = new HashSet<Integer>(); 
+        Vector<Integer> path = new Vector<Integer>(); 
         st1.insert(5);
         st1.insert(2);
         st1.insert(10);
@@ -314,6 +333,7 @@ public class BST {
         // System.out.println(st1.isPerfectlyBalanced(st1.root));
         // System.out.println(st1.searchClosest(16, st1.root, Integer.MAX_VALUE));
         // System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
-        st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
+        // st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
+        st1.printPathsWithSum(30, st1.root, path, Integer.valueOf(0));
     }
 }
