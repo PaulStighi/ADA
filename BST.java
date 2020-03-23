@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class BST {
@@ -175,6 +174,12 @@ public class BST {
 		return node;
     }
     
+    /**
+     * Check if the subtree with root node is perfectly balanced
+     * (difference of weight between left and right child is 1 at most)
+     * @param node
+     * @return
+     */
     public boolean isPerfectlyBalanced(Node node) {
         if(node.right == null && node.left == null) return true;
         else {
@@ -190,6 +195,14 @@ public class BST {
         }
     }
 
+    /**
+     * Given a fixed value k, find the node in the BST with
+     * closest value of key to k
+     * @param k
+     * @param node
+     * @param min_dif
+     * @return
+     */
     public Node searchClosest(int k, Node node, int min_dif) {
         if(node == null)    return null;
         if(k == node.key)   return node;
@@ -219,6 +232,13 @@ public class BST {
         return closest;
     }
 
+    /**
+     * For a fixed sum, find two nodes that added match the sum
+     * @param sum
+     * @param node
+     * @param s
+     * @return
+     */
     public boolean checkExistTwoNodesWithSum(int sum, Node node, HashSet<Integer> s) {
         if(node == null)    return false;
         
@@ -238,6 +258,14 @@ public class BST {
         return ok;
     }
 
+    /**
+     * From a src node k1 and a dest node k2
+     * fint the shortest path, trough the 
+     * lowest common ancestor
+     * @param k1
+     * @param k2
+     * @param root
+     */
     public void printPathFromTo(int k1, int k2, Node root) {
         Node n1 = search(k1, root);
         Node n2 = search(k2, root);
@@ -275,6 +303,15 @@ public class BST {
         }
     }
 
+    /**
+     * Given a fixed sum print the paths with added elements
+     * matching the sum. Beggining with the root of the tree 
+     * and ending with one of the leaves
+     * @param sum
+     * @param node
+     * @param path
+     * @param crt
+     */
     public void printPathsWithSum(int sum, Node node, Vector<Integer> path, int crt) {
         if(node == null)    return;
         
@@ -293,6 +330,12 @@ public class BST {
         path.remove(path.size() - 1);
     }
 
+    /**
+     * Print the keys of the nodes in depth order
+     * The nodes with the same depth are printed 
+     * from smallest to biggest
+     * @param root
+     */
     public void printLevels(Node root) {
         Queue<Node> q = new LinkedList<Node>();
 
@@ -312,8 +355,14 @@ public class BST {
             }
             System.out.print(head.key + " ");
         }
+
+        System.out.println();
     }
 
+    /**
+     * Given a sorted array (inorder traversal), 
+     * construct the BST coresponding with that keys
+     */
     public Node createBalancedBSTfromSortedArray(int arr[], int start, int end) {
         if(start > end) return null;
 
@@ -326,6 +375,14 @@ public class BST {
         return node;
     }
 
+    /**
+     * For a postorder traversal array check if 
+     * it can be transformed in a BST
+     * @param arr
+     * @param start
+     * @param end
+     * @return
+     */
     public boolean isPostorderArray(int arr[], int start, int end) {
         if(start >= end)    return true;
 
@@ -342,6 +399,32 @@ public class BST {
 
         if(tmp == start)    return isPostorderArray(arr, start, end - 1);
         else                return (isPostorderArray(arr, start, tmp) && isPostorderArray(arr, tmp + 1, end - 1));
+    }
+
+    /**
+     * Using a BST postorder traversal
+     * create the coresponging BST and return it's root
+     * @param arr
+     * @param start
+     * @param end
+     * @return
+     */
+    public Node createBSTfromPostOrderArray(int arr[], int start, int end) {
+        if(start > end) return null;
+
+        Node root = new Node(arr[end]);
+
+        int i;
+
+        for(i = end ; i >= start ; --i) {
+            if(arr[i] < root.key)
+                break;
+        }
+
+        root.left = createBSTfromPostOrderArray(arr, start, i);
+        root.right = createBSTfromPostOrderArray(arr, i + 1, end - 1);
+
+        return root;
     }
 
     public static void main(String[] args) {
@@ -369,31 +452,42 @@ public class BST {
         st1.depthPrecalc(st1.root);
         st1.weightPrecalc(st1.root);
 
-        // System.out.println("\n>>>>>>>>>>>\nInorder:");
-        // st1.inorder(st1.root);                                                  // 2 5 8 10 15
-        // System.out.println("\n>>>>>>>>>>>\nPreorder:");
-        // st1.preorder(st1.root);                                                 // 5 2 10 8 15
-        // System.out.println("\n>>>>>>>>>>>\nPostorder:");
-        // st1.postorder(st1.root);                                                // 2 8 15 10 5
-        // System.out.println("\n>>>>>>>>>>>");
-        // System.out.println("Height: " + st1.height(st1.root));                  // Height: 3
-        // System.out.println("\n>>>>>>>>>>>");
-        // System.out.println(st1.search(Integer.valueOf(2),st1.root));                // Key: 2
-        // System.out.println(st1.search(Integer.valueOf(4),st1.root));                // null
-        // System.out.println("\n>>>>>>>>>>>");
-        // System.out.println(st1.successor(st1.root,null,Integer.valueOf(8)));        // Key: 10
-        // System.out.println(st1.successor(st1.root,null,Integer.valueOf(15)));       // null
-        // System.out.println("\n>>>>>>>>>>>");
+        System.out.println("\n>>>>>>>>>>>\nInorder:");
+        st1.inorder(st1.root);                                                  // 2 5 8 10 15
+        System.out.println("\n>>>>>>>>>>>\nPreorder:");
+        st1.preorder(st1.root);                                                 // 5 2 10 8 15
+        System.out.println("\n>>>>>>>>>>>\nPostorder:");
+        st1.postorder(st1.root);                                                // 2 8 15 10 5
+        System.out.println("\n>>>>>>>>>>>");
+        System.out.println("Height: " + st1.height(st1.root));                  // Height: 3
+        System.out.println("\n>>>>>>>>>>>");
+        System.out.println(st1.search(Integer.valueOf(2),st1.root));                // Key: 2
+        System.out.println(st1.search(Integer.valueOf(4),st1.root));                // null
+        System.out.println("\n>>>>>>>>>>>");
+        System.out.println(st1.successor(st1.root,null,Integer.valueOf(8)));        // Key: 10
+        System.out.println(st1.successor(st1.root,null,Integer.valueOf(15)));       // null
+        System.out.println("\n>>>>>>>>>>>");
 
-        // System.out.println(st1.isPerfectlyBalanced(st1.root));
-        // System.out.println(st1.searchClosest(16, st1.root, Integer.MAX_VALUE));
-        // System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
-        // st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
-        // st1.printPathsWithSum(30, st1.root, path, Integer.valueOf(0));
-        // st1.printLevels(st1.root);
-        // Node root2 = st1.createBalancedBSTfromSortedArray(arr, 0, arr.length - 1);
-        // st1.preorder(root2);                                                         // 5 2 1 3 4 7 6 8 9
+        System.out.println(st1.isPerfectlyBalanced(st1.root));
+        
+        System.out.println(st1.searchClosest(16, st1.root, Integer.MAX_VALUE));
+        
+        System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
+        
+        st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
+        
+        st1.printPathsWithSum(30, st1.root, path, Integer.valueOf(0));
+        
+        st1.printLevels(st1.root);
+        
+        Node root2 = st1.createBalancedBSTfromSortedArray(arr, 0, arr.length - 1);
+        st1.preorder(root2);                                                         // 5 2 1 3 4 7 6 8 9
+        System.out.println();
+        
         System.out.println(st1.isPostorderArray(arrTrue, 0, arrTrue.length - 1));
         System.out.println(st1.isPostorderArray(arrFalse, 0 , arrFalse.length - 1));
+        
+        Node root3 = st1.createBSTfromPostOrderArray(arrTrue, 0, arrTrue.length - 1);
+        st1.inorder(root3);
     }
 }
