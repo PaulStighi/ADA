@@ -292,6 +292,27 @@ public class BST {
         path.remove(path.size() - 1);
     }
 
+    public void printLevels(Node root) {
+        Queue<Node> q = new LinkedList<Node>();
+
+        q.add(root);
+
+        int depth = -1;
+
+        while(q.size() > 0) {
+            Node head = q.poll();
+
+            if(head.left != null)   q.add(head.left);
+            if(head.right != null)  q.add(head.right);
+
+            if(depth != head.depth) {
+                System.out.println("\nLevel " + head.depth + ":");
+                depth = head.depth;
+            }
+            System.out.print(head.key + " ");
+        }
+    }
+
     public static void main(String[] args) {
         BST st1 = new BST();
         HashSet<Integer> s = new HashSet<Integer>(); 
@@ -334,6 +355,7 @@ public class BST {
         // System.out.println(st1.searchClosest(16, st1.root, Integer.MAX_VALUE));
         // System.out.println(st1.checkExistTwoNodesWithSum(12, st1.root, s));
         // st1.printPathFromTo(Integer.valueOf(2), Integer.valueOf(10), st1.root);
-        st1.printPathsWithSum(30, st1.root, path, Integer.valueOf(0));
+        // st1.printPathsWithSum(30, st1.root, path, Integer.valueOf(0));
+        st1.printLevels(st1.root);
     }
 }
